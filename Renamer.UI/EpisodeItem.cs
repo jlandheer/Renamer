@@ -1,0 +1,55 @@
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Renamer.UI.Annotations;
+
+namespace Renamer.UI
+{
+   public class EpisodeItem : INotifyPropertyChanged
+   {
+      private string _name;
+      private int _episode;
+      private int _season;
+
+      public event PropertyChangedEventHandler PropertyChanged;
+
+      [NotifyPropertyChangedInvocator]
+      protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+      {
+         var handler = PropertyChanged;
+         if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+      }
+
+      public int Season
+      {
+         get { return _season; }
+         set
+         {
+            if (value == _season) return;
+            _season = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public int Episode
+      {
+         get { return _episode; }
+         set
+         {
+            if (value == _episode) return;
+            _episode = value;
+            OnPropertyChanged();
+         }
+      }
+
+      public string Name
+      {
+         get { return _name; }
+         set
+         {
+            if (value == _name) return;
+            _name = value;
+            OnPropertyChanged();
+         }
+      }
+   }
+}
