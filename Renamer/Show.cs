@@ -13,8 +13,13 @@ namespace Renamer
       public int YearStarted { get; set; }
       public string Path { get; set; }
       public int NumberOfSeasons { get; set; }
-      public IList<Season> Seasons { get; set; }
+      public IList<Episode> Episodes { get; set; }
       public object IsEnded { get; private set; }
+
+      public Show()
+      {
+         Episodes = new List<Episode>();
+      }
 
       public static Show FromStream(Stream stream)
       {
@@ -42,39 +47,30 @@ namespace Renamer
          var xmlDoc = new XmlDocument();
          xmlDoc.Load(stream);
 
-         var seasons = new List<Season>();
+         var episodes = new List<Episode>();
          var currentSeasons = xmlDoc.GetElementsByTagName("Season");
          for (var i = 0; i < currentSeasons.Count; i++)
          {
             var currentSeason = currentSeasons[i];
-            var season = new Season();
-            season.Number = int.Parse(currentSeason.Attributes["no"].InnerText);
-            var episodes = new List<Episode>();
+            var seasonNumber = int.Parse(currentSeason.Attributes["no"].InnerText);
             var currentEpisodes = currentSeason.SelectNodes("episode");
             for (var j = 0; j < currentEpisodes.Count; j++)
             {
                var currentEpisode = currentEpisodes[j];
                episodes.Add(new Episode
                {
+                  Season = seasonNumber,
                   Number = int.Parse(currentEpisode.SelectSingleNode("seasonnum").InnerText),
                   Name = currentEpisode.SelectSingleNode("title").InnerText
                });
             }
-            season.Episodes = episodes;
-            seasons.Add(season);
          }
-         Seasons = seasons;
+         Episodes = episodes;
       }
 
       public string GetEpisodeName(int seasonNumber, int episodeNumber)
       {
-         var season = Seasons.SingleOrDefault(i => i.Number == seasonNumber);
-         if (season == null)
-         {
-            return null;
-         }
-
-         var episode = season.Episodes.SingleOrDefault(i => i.Number == episodeNumber);
+         var episode = Episodes.SingleOrDefault(i => i.Season == seasonNumber && i.Number == episodeNumber);
          if (episode == null)
          {
             return null;

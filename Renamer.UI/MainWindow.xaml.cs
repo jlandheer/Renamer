@@ -15,21 +15,22 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Amib.Threading;
 using AutoMapper;
-namespace ParaPlan.Converters
-{
-}
+
 namespace Renamer.UI
 {
    public partial class MainWindow : Window
    {
       private readonly ViewModel _viewModel;
-      public const string SeriesLocation = @"D:\Series";
+      public const string SeriesLocation = @"S:\Hd";
 
       public MainWindow()
       {
          InitializeComponent();
 
          InitializeMapper();
+         var s = new Show() { Episodes = new List<Episode> { new Episode { Season = 1, Number = 1, Name = "Ep1" } } };
+         var i2 = s.Episodes.Select(i => Mapper.Map<EpisodeItem>(i));
+
          var pool = new SmartThreadPool();
 
          _viewModel = new ViewModel();
@@ -46,10 +47,12 @@ namespace Renamer.UI
             {
                showItem.Status = Status.Checking;
                var show = await cache.GetShowAsync(currentShowDirectory);
-               Thread.Sleep(rand.Next(1000, 3000));
+               //Thread.Sleep(rand.Next(1000, 3000));
                if (show != null)
                {
                   showItem.ShowName = show.Name;
+                  var itemsToAdd = show.Episodes.Select(i => Mapper.Map<EpisodeItem>(i)).ToList();
+                  showItem.Episodes.AddRange(itemsToAdd);
                   showItem.Status = Status.Found;
                }
                else
@@ -68,12 +71,40 @@ namespace Renamer.UI
 
       private void Window_Loaded(object sender, RoutedEventArgs e)
       {
-         this.DataContext = _viewModel;
+         DataContext = _viewModel;
       }
 
       private void Button_Click(object sender, RoutedEventArgs e)
       {
          _viewModel.Shows[0].Location = "Test";
+      }
+
+      private void showDirectoryListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      {
+         var value = ((sender as ListView).SelectedItem) as ShowItem;
+         switch (value.Status)
+         {
+            case Status.Idle:
+               SearchForm.Visibility = Visibility.Collapsed;
+               EpisodeList.Visibility = Visibility.Collapsed;
+               break;
+            case Status.Checking:
+               SearchForm.Visibility = Visibility.Collapsed;
+               EpisodeList.Visibility = Visibility.Collapsed;
+               break;
+            case Status.Found:
+               EpisodeList.DataContext = value;
+               SearchForm.Visibility = Visibility.Collapsed;
+               EpisodeList.Visibility = Visibility.Visible;
+               break;
+            case Status.NotFound:
+               SearchForm.SetShow(value);
+               SearchForm.Visibility = Visibility.Visible;
+               EpisodeList.Visibility = Visibility.Collapsed;
+               break;
+            default:
+               throw new ArgumentOutOfRangeException();
+         }
       }
    }
 }

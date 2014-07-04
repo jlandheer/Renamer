@@ -1,14 +1,15 @@
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Renamer.UI.Annotations;
 
 namespace Renamer.UI
 {
-   public class EpisodeItem : INotifyPropertyChanged
+   public class EpisodeItem : INotifyPropertyChanged, IComparable<EpisodeItem>
    {
-      private string _name;
-      private int _episode;
       private int _season;
+      private int _number;
+      private string _name;
 
       public event PropertyChangedEventHandler PropertyChanged;
 
@@ -30,13 +31,13 @@ namespace Renamer.UI
          }
       }
 
-      public int Episode
+      public int Number
       {
-         get { return _episode; }
+         get { return _number; }
          set
          {
-            if (value == _episode) return;
-            _episode = value;
+            if (value == _number) return;
+            _number = value;
             OnPropertyChanged();
          }
       }
@@ -50,6 +51,11 @@ namespace Renamer.UI
             _name = value;
             OnPropertyChanged();
          }
+      }
+
+      public int CompareTo(EpisodeItem other)
+      {
+         return (1000*Season + Number).CompareTo(1000*other.Season + other.Number);
       }
    }
 }

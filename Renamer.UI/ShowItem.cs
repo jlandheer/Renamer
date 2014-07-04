@@ -1,12 +1,12 @@
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Controls.Primitives;
 using Renamer.UI.Annotations;
 
 namespace Renamer.UI
 {
-   public class ShowItem : INotifyPropertyChanged
+   public class ShowItem : INotifyPropertyChanged, IComparable<ShowItem>
    {
       private string _showNameOnDisk;
       private string _location;
@@ -17,7 +17,7 @@ namespace Renamer.UI
 
       public ShowItem()
       {
-         Episodes = new ObservableCollection<EpisodeItem>();
+         Episodes = new ComparingObservableCollection<EpisodeItem>();
          Status = Status.Idle;
       }
 
@@ -72,7 +72,17 @@ namespace Renamer.UI
          }
       }
 
-      public ObservableCollection<EpisodeItem> Episodes { get; set; }
+      public ComparingObservableCollection<EpisodeItem> Episodes { get; set; }
+
+      public int CompareTo(ShowItem other)
+      {
+         var shownameCompare = String.Compare(ShowName, other.ShowName, StringComparison.Ordinal);
+         if (shownameCompare == 0)
+         {
+            return String.Compare(ShowNameOnDisk, other.ShowNameOnDisk, StringComparison.Ordinal);
+         }
+         return shownameCompare;
+      }
    }
 
    public enum Status

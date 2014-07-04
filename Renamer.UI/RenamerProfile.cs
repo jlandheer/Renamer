@@ -12,7 +12,11 @@ namespace Renamer.UI
       protected override void Configure()
       {
          CreateMap<ShowDirectory, ShowItem>()
-            .ForMember(i => i.ShowName, opt => opt.MapFrom(s => "Nb"));
+            .ForMember(i => i.Status, opt => opt.Ignore())
+            .ForMember(i => i.Episodes, opt => opt.Ignore())
+            .ForMember(i => i.ShowName, opt => opt.Ignore());
+
+         CreateMap<Episode, EpisodeItem>();
       }
    }
 }

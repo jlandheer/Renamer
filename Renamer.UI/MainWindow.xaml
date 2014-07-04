@@ -14,11 +14,10 @@
    <Window.DataContext>
       <ui:ViewModel/>
    </Window.DataContext>
-
    <StackPanel Orientation="Horizontal">
       <ListView  x:Name="showDirectoryListView" ItemsSource="{Binding Shows}" Margin="20,5,0,10" 
                  SelectionMode="Single" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Width="389"
-                 SelectedItem="{Binding SelectedShow}"
+                 SelectedItem="{Binding SelectedShow}" SelectionChanged="showDirectoryListView_SelectionChanged"
                  >
          <ListView.ItemTemplate>
             <DataTemplate>
@@ -30,25 +29,9 @@
             </DataTemplate>
          </ListView.ItemTemplate>
       </ListView>
-      <StackPanel Orientation="Vertical" Width="455" 
-                  Visibility="{Binding SelectedShow, Converter={StaticResource ObjectNullToVisibility}}" 
-                  >
-         <Label Content="{Binding SelectedShow.ShowName}" Width="387" Height="43" FontSize="18"/>
-         <ListView x:Name="episodeListView" 
-      		ItemsSource="{Binding SelectedShow.Episodes}" 
-                  Visibility="{Binding SelectedShow.Status, Converter={StaticResource StatusToVisibility}}" 
-      		Height="224" Width="387">
-            <ListView.ItemTemplate>
-               <DataTemplate>
-                  <StackPanel Orientation="Vertical" Width="auto" Background="Beige">
-                     <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="Bold"/>
-                     <TextBlock Text="{Binding Season}" FontSize="10"/>
-                     <TextBlock Text="{Binding Episode}" FontSize="10"/>
-                  </StackPanel>
-               </DataTemplate>
-            </ListView.ItemTemplate>
-         </ListView>
-         <Button Content="Button" Width="75" Click="Button_Click" Margin="190,0"/>
+      <StackPanel Orientation="Vertical" Width="455" >
+         <ui:SearchForm Visibility="Hidden" x:Name="SearchForm"></ui:SearchForm>
+         <ui:EpisodeList Visibility="Hidden" x:Name="EpisodeList"></ui:EpisodeList>
       </StackPanel>
    </StackPanel>
 </Window>

@@ -70,12 +70,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ComparingObservableCollection.cs" />
+    <Compile Include="EpisodeList.xaml.cs">
+      <DependentUpon>EpisodeList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="ObjectNullToVisibility.cs" />
     <Compile Include="EpisodeItem.cs" />
     <Compile Include="RenamerProfile.cs" />
+    <Compile Include="SearchForm.xaml.cs">
+      <DependentUpon>SearchForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ShowItem.cs" />
     <Compile Include="StatusToVisibility.cs" />
     <Compile Include="ViewModel.cs" />
+    <Page Include="EpisodeList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -88,6 +100,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SearchForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\Annotations.cs" />

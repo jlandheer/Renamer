@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using AutoMapper;
+using NUnit.Framework;
 using Renamer.UI;
 
 namespace Renamer.Tests
@@ -14,6 +15,7 @@ namespace Renamer.Tests
          };
 
          Assert.DoesNotThrow(() => MainWindow.InitializeMapper());
+         Mapper.AssertConfigurationIsValid();
       }
    }
 }

@@ -11,8 +11,8 @@ namespace Renamer
       private const string SeriesLocation = @"S:\HD";
       private static void Main(string[] args)
       {
-         //DirectoriesScanner();
-         Renaming();
+         DirectoriesScanner();
+         //Renaming();
          Console.WriteLine("Done");
          Console.ReadKey();
       }

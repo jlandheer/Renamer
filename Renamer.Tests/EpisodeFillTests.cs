@@ -64,7 +64,7 @@ namespace Renamer.Tests
          var show = new Show();
          show.FillEpisodes(EpisodeInfoXml.ToStream());
 
-         Assert.AreEqual(2, show.Seasons.Count());
+         Assert.AreEqual(2, show.Episodes.GroupBy(i => i.Season).Count());
       }
 
       [Test]
@@ -73,7 +73,7 @@ namespace Renamer.Tests
          var show = new Show();
          show.FillEpisodes(EpisodeInfoXml.ToStream());
 
-         Assert.AreEqual(3, show.Seasons.First().Episodes.Count());
+         Assert.AreEqual(3, show.Episodes.Count(i => i.Season == 1));
       }
 
       [Test]
@@ -82,7 +82,7 @@ namespace Renamer.Tests
          var show = new Show();
          show.FillEpisodes(EpisodeInfoXml.ToStream());
 
-         Assert.AreEqual(2, show.Seasons.ToList()[1].Episodes.Count());
+         Assert.AreEqual(2, show.Episodes.Count(i => i.Season == 2));
       }
 
       [Test]
@@ -91,16 +91,16 @@ namespace Renamer.Tests
          var show = new Show();
          show.FillEpisodes(EpisodeInfoXml.ToStream());
 
-         Assert.AreEqual("Dill2", show.Seasons.ToList()[1].Episodes.ToList()[1].Name);
+         Assert.AreEqual("Dill2", show.Episodes.Single(i => i.Season == 2 && i.Number == 2).Name);
       }
 
       [Test]
-      public void SesondSeasonSeconsEpisodeNumberIfFilled()
+      public void SesondSeasonSecondEpisodeNumberIsFilled()
       {
          var show = new Show();
          show.FillEpisodes(EpisodeInfoXml.ToStream());
 
-         Assert.AreEqual(2, show.Seasons.ToList()[1].Episodes.ToList()[1].Number);
+         Assert.AreEqual(2, show.Episodes.Single(i => i.Season == 2 && i.Number == 2).Number);
       }
    }
 }
