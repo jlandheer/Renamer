@@ -54,7 +54,7 @@ namespace Renamer
          for (var i = 0; i < shows.Count; i++)
          {
             var show = shows[i];
-            string endedText = show.SelectSingleNode("ended").InnerText;
+            var endedText = show.SelectSingleNode("ended").InnerText;
             yield return new SearchResult
             {
                // ReSharper disable PossibleNullReferenceException

@@ -1,32 +1,54 @@
 ﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Renamer="clr-namespace:Renamer;assembly=Renamer"
+   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
    xmlns:ui="clr-namespace:Renamer.UI"
-   mc:Ignorable="d" x:Class="Renamer.UI.MainWindow"
-        Title="MainWindow" Height="374.306" Width="625.868" Loaded="Window_Loaded">
+   mc:Ignorable="d" x:Class="Renamer.UI.MainWindow" Title="MainWindow" Height="724.263" Width="873.327" Loaded="Window_Loaded">
+
    <Window.Resources>
-      <CollectionViewSource x:Key="showDirectoryViewSource" d:DesignSource="{d:DesignInstance {x:Type ui:ShowItem}, CreateList=True}"/>
-      <CollectionViewSource x:Key="episodeViewSource" d:DesignSource="{d:DesignInstance {x:Type ui:EpisodeItem}, CreateList=True}"/>
+      <ui:StatusToVisibility x:Key="StatusToVisibility"/>
+      <ui:ObjectNullToVisibility x:Key="ObjectNullToVisibility"/>
    </Window.Resources>
-   <Grid>
-      <ListView  DataContext="{StaticResource showDirectoryViewSource}" x:Name="showDirectoryListView" ItemsSource="{Binding}" Margin="20,5,0,114" SelectionMode="Single" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Width="268">
+
+   <Window.DataContext>
+      <ui:ViewModel/>
+   </Window.DataContext>
+
+   <StackPanel Orientation="Horizontal">
+      <ListView  x:Name="showDirectoryListView" ItemsSource="{Binding Shows}" Margin="20,5,0,10" 
+                 SelectionMode="Single" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Width="389"
+                 SelectedItem="{Binding SelectedShow}"
+                 >
          <ListView.ItemTemplate>
             <DataTemplate>
                <StackPanel Orientation="Vertical" Width="auto" Background="Beige">
-                  <TextBlock Text="{Binding ShowNameOnDisk}" FontSize="14" FontWeight="Bold"></TextBlock>
+                  <TextBlock Text="{Binding ShowName}" FontSize="14" FontWeight="Bold"></TextBlock>
                   <TextBlock Text="{Binding Location}" FontSize="10"></TextBlock>
+                  <TextBlock Text="{Binding Status}"></TextBlock>
                </StackPanel>
             </DataTemplate>
          </ListView.ItemTemplate>
       </ListView>
-      <Button Content="Button" HorizontalAlignment="Left" Margin="341,240,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
-      <ListView DataContext="{StaticResource episodeViewSource}" x:Name="episodeListView" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="224" Margin="326,5,0,0" VerticalAlignment="Top" Width="255">
-         <ListView.View>
-            <GridView>
-               <GridViewColumn/>
-            </GridView>
-         </ListView.View>
-      </ListView>
-   </Grid>
+      <StackPanel Orientation="Vertical" Width="455" 
+                  Visibility="{Binding SelectedShow, Converter={StaticResource ObjectNullToVisibility}}" 
+                  >
+         <Label Content="{Binding SelectedShow.ShowName}" Width="387" Height="43" FontSize="18"/>
+         <ListView x:Name="episodeListView" 
+      		ItemsSource="{Binding SelectedShow.Episodes}" 
+                  Visibility="{Binding SelectedShow.Status, Converter={StaticResource StatusToVisibility}}" 
+      		Height="224" Width="387">
+            <ListView.ItemTemplate>
+               <DataTemplate>
+                  <StackPanel Orientation="Vertical" Width="auto" Background="Beige">
+                     <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="Bold"/>
+                     <TextBlock Text="{Binding Season}" FontSize="10"/>
+                     <TextBlock Text="{Binding Episode}" FontSize="10"/>
+                  </StackPanel>
+               </DataTemplate>
+            </ListView.ItemTemplate>
+         </ListView>
+         <Button Content="Button" Width="75" Click="Button_Click" Margin="190,0"/>
+      </StackPanel>
+   </StackPanel>
 </Window>
