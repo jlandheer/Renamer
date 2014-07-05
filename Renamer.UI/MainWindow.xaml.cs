@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,6 +22,7 @@ namespace Renamer.UI
    public partial class MainWindow : Window
    {
       private readonly ViewModel _viewModel;
+      private Random _rand = new Random();
       public const string SeriesLocation = @"S:\Hd";
 
       public MainWindow()
@@ -28,40 +30,13 @@ namespace Renamer.UI
          InitializeComponent();
 
          InitializeMapper();
-         var s = new Show() { Episodes = new List<Episode> { new Episode { Season = 1, Number = 1, Name = "Ep1" } } };
-         var i2 = s.Episodes.Select(i => Mapper.Map<EpisodeItem>(i));
+         SearchForm.SetApi(new TvRageClient());
+         SearchForm.Visibility = Visibility.Collapsed;
+         EpisodeList.Visibility = Visibility.Collapsed;
 
-         var pool = new SmartThreadPool();
+         //var pool = new SmartThreadPool();
 
          _viewModel = new ViewModel();
-         var lister = new ShowLister(SeriesLocation);
-
-         var cache = new ShowCache();
-         var rand = new Random();
-         foreach (var showDirectory in lister.Shows)
-         {
-            var currentShowDirectory = showDirectory;
-            var showItem = Mapper.Map<ShowItem>(currentShowDirectory);
-            _viewModel.Shows.Add(showItem);
-            pool.QueueWorkItem(async () =>
-            {
-               showItem.Status = Status.Checking;
-               var show = await cache.GetShowAsync(currentShowDirectory);
-               //Thread.Sleep(rand.Next(1000, 3000));
-               if (show != null)
-               {
-                  showItem.ShowName = show.Name;
-                  var itemsToAdd = show.Episodes.Select(i => Mapper.Map<EpisodeItem>(i)).ToList();
-                  showItem.Episodes.AddRange(itemsToAdd);
-                  showItem.Status = Status.Found;
-               }
-               else
-               {
-                  showItem.ShowName = "Niet gevonden";
-                  showItem.Status = Status.NotFound;
-               }
-            });
-         }
       }
 
       public static void InitializeMapper()
@@ -74,14 +49,16 @@ namespace Renamer.UI
          DataContext = _viewModel;
       }
 
-      private void Button_Click(object sender, RoutedEventArgs e)
-      {
-         _viewModel.Shows[0].Location = "Test";
-      }
-
       private void showDirectoryListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
       {
          var value = ((sender as ListView).SelectedItem) as ShowItem;
+         if (value == null)
+         {
+            SearchForm.Visibility = Visibility.Collapsed;
+            EpisodeList.Visibility = Visibility.Collapsed;
+            return;
+         }
+
          switch (value.Status)
          {
             case Status.Idle:
@@ -104,6 +81,36 @@ namespace Renamer.UI
                break;
             default:
                throw new ArgumentOutOfRangeException();
+         }
+      }
+
+      private async void Button_Click(object sender, RoutedEventArgs e)
+      {
+         _viewModel.SelectedShow = null;
+         _viewModel.Shows.Clear();
+         var lister = new ShowLister(SeriesLocation);
+
+         var cache = new ShowCache();
+         foreach (var showDirectory in lister.Shows)
+         {
+            var currentShowDirectory = showDirectory;
+            var showItem = Mapper.Map<ShowItem>(currentShowDirectory);
+            _viewModel.Shows.Add(showItem);
+            showItem.Status = Status.Checking;
+            var show = await cache.GetShowAsync(currentShowDirectory);
+            //Thread.Sleep(rand.Next(1000, 3000));
+            if (show != null)
+            {
+               showItem.ShowName = show.Name;
+               var itemsToAdd = show.Episodes.Select(i => Mapper.Map<EpisodeItem>(i)).ToList();
+               showItem.Episodes.AddRange(itemsToAdd);
+               showItem.Status = Status.Found;
+            }
+            else
+            {
+               showItem.ShowName = "Niet gevonden";
+               showItem.Status = Status.NotFound;
+            }
          }
       }
    }

@@ -4,7 +4,7 @@
    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
    xmlns:ui="clr-namespace:Renamer.UI"
-   mc:Ignorable="d" x:Class="Renamer.UI.MainWindow" Title="MainWindow" Height="724.263" Width="873.327" Loaded="Window_Loaded">
+   mc:Ignorable="d" x:Class="Renamer.UI.MainWindow" Title="MainWindow" Height="752.263" Width="873.327" Loaded="Window_Loaded">
 
    <Window.Resources>
       <ui:StatusToVisibility x:Key="StatusToVisibility"/>
@@ -14,11 +14,14 @@
    <Window.DataContext>
       <ui:ViewModel/>
    </Window.DataContext>
-   <StackPanel Orientation="Horizontal">
-      <ListView  x:Name="showDirectoryListView" ItemsSource="{Binding Shows}" Margin="20,5,0,10" 
-                 SelectionMode="Single" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Width="389"
-                 SelectedItem="{Binding SelectedShow}" SelectionChanged="showDirectoryListView_SelectionChanged"
-                 >
+   <Grid>
+      <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="392*"/>
+         <ColumnDefinition Width="473*"/>
+      </Grid.ColumnDefinitions>
+      <ListView Grid.Column="0" HorizontalAlignment="Left" Height="640" Margin="10,10,0,0" VerticalAlignment="Top" Width="372" ItemsSource="{Binding Shows}" 
+                 SelectionMode="Single" HorizontalContentAlignment="Stretch" 
+                 SelectedItem="{Binding SelectedShow}" SelectionChanged="showDirectoryListView_SelectionChanged">
          <ListView.ItemTemplate>
             <DataTemplate>
                <StackPanel Orientation="Vertical" Width="auto" Background="Beige">
@@ -29,9 +32,8 @@
             </DataTemplate>
          </ListView.ItemTemplate>
       </ListView>
-      <StackPanel Orientation="Vertical" Width="455" >
-         <ui:SearchForm Visibility="Hidden" x:Name="SearchForm"></ui:SearchForm>
-         <ui:EpisodeList Visibility="Hidden" x:Name="EpisodeList"></ui:EpisodeList>
-      </StackPanel>
-   </StackPanel>
+      <Button Grid.Column="0" Content="Button" HorizontalAlignment="Left" Margin="10,655,0,0" VerticalAlignment="Top" Width="372" Height="56" Click="Button_Click"/>
+      <ui:SearchForm Grid.Column="1" x:Name="SearchForm"></ui:SearchForm >
+      <ui:EpisodeList Grid.Column="1" x:Name="EpisodeList"></ui:EpisodeList>
+   </Grid>
 </Window>

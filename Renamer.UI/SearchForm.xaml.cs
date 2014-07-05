@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AutoMapper;
 
 namespace Renamer.UI
 {
@@ -20,14 +20,33 @@ namespace Renamer.UI
    /// </summary>
    public partial class SearchForm : UserControl
    {
+      private ITvShowApiClient _client;
+      private SearchFormViewModel _viewModel;
+
       public SearchForm()
       {
          InitializeComponent();
+         _viewModel = new SearchFormViewModel();
+         DataContext = _viewModel;
+      }
+
+      public void SetApi(ITvShowApiClient client)
+      {
+         _client = client;
       }
 
       public void SetShow(ShowItem show)
       {
          SearchTerm.Text = show.ShowNameOnDisk;
+      }
+
+      private async void DoSearch_Click(object sender, RoutedEventArgs e)
+      {
+         var result = await _client.SearchAsync(SearchTerm.Text);
+         foreach (var searchResult in result)
+         {
+            _viewModel.SearchResults.Add(Mapper.Map<SearchResultItem>(searchResult));
+         }
       }
    }
 }

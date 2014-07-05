@@ -81,6 +81,8 @@
     <Compile Include="SearchForm.xaml.cs">
       <DependentUpon>SearchForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SearchFormViewModel.cs" />
+    <Compile Include="SearchResultItem.cs" />
     <Compile Include="ShowItem.cs" />
     <Compile Include="StatusToVisibility.cs" />
     <Compile Include="ViewModel.cs" />

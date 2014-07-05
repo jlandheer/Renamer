@@ -17,6 +17,8 @@ namespace Renamer.UI
             .ForMember(i => i.ShowName, opt => opt.Ignore());
 
          CreateMap<Episode, EpisodeItem>();
+
+         CreateMap<SearchResult, SearchResultItem>();
       }
    }
 }
