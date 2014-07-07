@@ -16,7 +16,7 @@
    <Grid>
       <TextBox x:Name="SearchTerm" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="236"/>
       <Button x:Name="DoSearch" Content="Go" HorizontalAlignment="Left" Margin="251,10,0,0" VerticalAlignment="Top" Width="39" Height="23" Click="DoSearch_Click"/>
-      <ListView x:Name="SearchResults" ItemsSource="{Binding SearchResults}" HorizontalAlignment="Left" Height="252" Margin="10,38,0,0" VerticalAlignment="Top" Width="280">
+      <ListView x:Name="SearchResults" ItemsSource="{Binding SearchResults}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Left" Height="252" Margin="10,38,0,0" VerticalAlignment="Top" Width="280">
             <ListView.ItemTemplate>
                <DataTemplate>
                   <StackPanel Orientation="Vertical" Width="auto" Background="Beige">

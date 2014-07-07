@@ -42,7 +42,11 @@ namespace Renamer.UI
 
       private async void DoSearch_Click(object sender, RoutedEventArgs e)
       {
+         SearchTerm.IsEnabled = false;
+         DoSearch.IsEnabled = false;
          var result = await _client.SearchAsync(SearchTerm.Text);
+         SearchTerm.IsEnabled = true;
+         DoSearch.IsEnabled = true;
          foreach (var searchResult in result)
          {
             _viewModel.SearchResults.Add(Mapper.Map<SearchResultItem>(searchResult));
