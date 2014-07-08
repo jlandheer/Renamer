@@ -11,7 +11,7 @@ namespace Renamer.UI
    {
       private readonly ViewModel _viewModel;
       private Random _rand = new Random();
-      public const string SeriesLocation = @"D:\Series";
+      public const string SeriesLocation = @"S:\HD";
 
       public MainWindow()
       {
@@ -23,7 +23,6 @@ namespace Renamer.UI
          EpisodeList.Visibility = Visibility.Collapsed;
 
          _viewModel = new ViewModel();
-         FillShowList().Wait();
       }
 
       public static void InitializeMapper()
@@ -31,9 +30,10 @@ namespace Renamer.UI
          Mapper.Initialize(config => config.AddProfile<RenamerProfile>());
       }
 
-      private void Window_Loaded(object sender, RoutedEventArgs e)
+      private async void Window_Loaded(object sender, RoutedEventArgs e)
       {
          DataContext = _viewModel;
+         await FillShowList();
       }
 
       private void showDirectoryListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

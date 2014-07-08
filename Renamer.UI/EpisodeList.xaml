@@ -10,7 +10,7 @@
       <ui:ShowItem/>
    </UserControl.DataContext>
    <Grid>
-      <ListView x:Name="Episodes" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Height="252" Margin="10,38,0,0" VerticalAlignment="Top" Width="280" ItemsSource="{Binding Episodes}">
+      <ListView x:Name="Episodes" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Height="252" Margin="10,38,0,0" VerticalAlignment="Top" ItemsSource="{Binding Episodes}">
          <ListView.ItemTemplate>
             <DataTemplate>
                <StackPanel Orientation="Vertical" Width="auto" Background="Beige">

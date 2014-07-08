@@ -1,5 +1,4 @@
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Renamer.UI.Annotations;
@@ -17,7 +16,7 @@ namespace Renamer.UI
 
       public ShowItem()
       {
-         Episodes = new ComparingObservableCollection<EpisodeItem>();
+         Episodes = new ObservableSortedList<EpisodeItem>();
          Status = Status.Idle;
       }
 
@@ -72,7 +71,7 @@ namespace Renamer.UI
          }
       }
 
-      public ComparingObservableCollection<EpisodeItem> Episodes { get; set; }
+      public ObservableSortedList<EpisodeItem> Episodes { get; set; }
 
       public int CompareTo(ShowItem other)
       {
@@ -83,13 +82,5 @@ namespace Renamer.UI
          }
          return shownameCompare;
       }
-   }
-
-   public enum Status
-   {
-      Idle,
-      Checking,
-      Found,
-      NotFound
    }
 }

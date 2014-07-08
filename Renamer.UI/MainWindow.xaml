@@ -9,14 +9,17 @@
    <Window.DataContext>
       <ui:ViewModel/>
    </Window.DataContext>
+   
    <Grid>
       <Grid.ColumnDefinitions>
          <ColumnDefinition Width="392*"/>
          <ColumnDefinition Width="473*"/>
       </Grid.ColumnDefinitions>
       <ListView Grid.Column="0" HorizontalAlignment="Left" Height="640" Margin="10,10,0,0" VerticalAlignment="Top" Width="372" ItemsSource="{Binding Shows}" 
-                 SelectionMode="Single" HorizontalContentAlignment="Stretch" 
-                 SelectedItem="{Binding SelectedShow}" SelectionChanged="showDirectoryListView_SelectionChanged">
+                SelectionMode="Single" 
+                HorizontalContentAlignment="Stretch" 
+                SelectedItem="{Binding SelectedShow}" 
+                SelectionChanged="showDirectoryListView_SelectionChanged">
          <ListView.ItemTemplate>
             <DataTemplate>
                <StackPanel Orientation="Vertical" Width="auto" Background="Beige">
@@ -27,7 +30,7 @@
             </DataTemplate>
          </ListView.ItemTemplate>
       </ListView>
-      <Button Grid.Column="0" Content="Button" HorizontalAlignment="Left" Margin="10,655,0,0" VerticalAlignment="Top" Width="372" Height="56" Click="Button_Click"/>
+      <Button Grid.Column="0" Content="Button" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" Margin="10,655,0,0" VerticalAlignment="Top" Width="372" Height="56" Click="Button_Click"/>
       <ui:SearchForm Grid.Column="1" x:Name="SearchForm"></ui:SearchForm >
       <ui:EpisodeList Grid.Column="1" x:Name="EpisodeList"></ui:EpisodeList>
    </Grid>

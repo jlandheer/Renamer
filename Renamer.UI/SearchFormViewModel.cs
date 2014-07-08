@@ -2,11 +2,11 @@
 {
    public class SearchFormViewModel
    {
-      public ComparingObservableCollection<SearchResultItem> SearchResults { get; set; }
+      public ObservableSortedList<SearchResultItem> SearchResults { get; set; }
 
       public SearchFormViewModel()
       {
-         SearchResults = new ComparingObservableCollection<SearchResultItem>();
+         SearchResults = new ObservableSortedList<SearchResultItem>();
       }
    }
 }
