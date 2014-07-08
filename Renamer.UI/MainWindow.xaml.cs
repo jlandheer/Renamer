@@ -1,20 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Amib.Threading;
 using AutoMapper;
 
 namespace Renamer.UI
@@ -23,7 +11,7 @@ namespace Renamer.UI
    {
       private readonly ViewModel _viewModel;
       private Random _rand = new Random();
-      public const string SeriesLocation = @"S:\Hd";
+      public const string SeriesLocation = @"D:\Series";
 
       public MainWindow()
       {
@@ -34,9 +22,8 @@ namespace Renamer.UI
          SearchForm.Visibility = Visibility.Collapsed;
          EpisodeList.Visibility = Visibility.Collapsed;
 
-         //var pool = new SmartThreadPool();
-
          _viewModel = new ViewModel();
+         FillShowList().Wait();
       }
 
       public static void InitializeMapper()
@@ -85,6 +72,11 @@ namespace Renamer.UI
       }
 
       private async void Button_Click(object sender, RoutedEventArgs e)
+      {
+         await FillShowList();
+      }
+
+      private async Task FillShowList()
       {
          _viewModel.SelectedShow = null;
          _viewModel.Shows.Clear();

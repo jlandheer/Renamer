@@ -6,11 +6,6 @@
    xmlns:ui="clr-namespace:Renamer.UI"
    mc:Ignorable="d" x:Class="Renamer.UI.MainWindow" Title="MainWindow" Height="752.263" Width="873.327" Loaded="Window_Loaded">
 
-   <Window.Resources>
-      <ui:StatusToVisibility x:Key="StatusToVisibility"/>
-      <ui:ObjectNullToVisibility x:Key="ObjectNullToVisibility"/>
-   </Window.Resources>
-
    <Window.DataContext>
       <ui:ViewModel/>
    </Window.DataContext>
