@@ -12,6 +12,7 @@ namespace Renamer
          _client = client;
       }
 
+
       public async Task<IEnumerable<SearchResult>> SearchAsync(string term)
       {
          return await _client.SearchAsync(term);
